@@ -1,40 +1,40 @@
 import "./styles.css";
 import { useState } from "react";
 
-export default function Button({type, time, necessary, startstyle, buttontext}) {
-    const [text, setText] = useState(buttontext);
-    const [style, setStyle] = useState(startstyle);
+export default function Button(props) {
+    const [text, setText] = useState(props.buttontext);
+    const [style, setStyle] = useState(props.startstyle);
 
     function handleClick() {
-        if (type === 'notifyTimer' ){
+        if (props.type === 'notifyTimer' ){
             notifyTimer();
         }
-        else if (type === 'add5Minutes'){
+        else if (props.type === 'add5Minutes'){
             addFiveMinutes();
         }
-        else if (type === 'subtract5Minutes'){
-            if (time >= 300){
+        else if (props.type === 'subtract5Minutes'){
+            if (props.time >= 300){
                 subtractFiveMinutes();
             }
         }
-        else if (type === 'editTimeTable'){
+        else if (props.type === 'editTimeTable'){
             editing();
-            necessary();
+            props.necessary();
         }
-        else if (type === "editClient"){
+        else if (props.type === "editClient"){
             clientAdding();
-            necessary();
+            props.necessary();
         }
-        else if (type === "FiveMore"){
-            necessary();
+        else if (props.type === "FiveMore"){
+            props.necessary();
         }
-        else if (type === "FiveLess"){
-            if (time > 300){
-                necessary();
+        else if (props.type === "FiveLess"){
+            if (props.time > 300){
+                props.necessary();
             }
         }
-        else if (type === "viewClient"){
-            necessary();
+        else if (props.type === "viewClient"){
+            props.necessary();
         }
     }
 
@@ -64,22 +64,22 @@ export default function Button({type, time, necessary, startstyle, buttontext}) 
         if (text === "Start"){
             setText("Started");
             setStyle("timerstarted");
-            necessary();
+            props.necessary();
 
         }
         else{
             setText("Start");
             setStyle("timer");
-            necessary();
+            props.necessary();
         }
     }
 
     function addFiveMinutes(){
-        necessary(time + 300);
+        props.necessary(props.time + 300);
     }
 
     function subtractFiveMinutes(){
-        necessary(time - 300);
+        props.necessary(props.time - 300);
     }
 
     return (

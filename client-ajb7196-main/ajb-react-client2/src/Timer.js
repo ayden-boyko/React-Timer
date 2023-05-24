@@ -1,8 +1,8 @@
 import "./styles.css";
 
-export default function Timer({time, calculateTime}){
+export default function Timer(props){
 
-    let display = calculateTime(time);
+    let display = props.calculateTime(props.time);
 
     return (
         <>

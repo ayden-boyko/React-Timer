@@ -1,46 +1,45 @@
 import { useState } from "react";
 import "./styles.css";
 import Button from "./Button";
+//{props.isRunning, props.currentclient, props.endTime, startTime, calculateTime}
 
-export default function List({isRunning, currentclient, endTime, startTime, calculateTime}) {
+export default function List(props) {
     const [done, setDone] = useState(1);
     const [tableData, setTableData] = useState([])
     const [index, setIndex] = useState(0);
     const [newRow, setNewRow] = useState({
         index: index,
-        client: currentclient,
-        project: currentclient,
-        startTime: calculateTime(startTime),
-        stopTime: calculateTime(endTime),
-        timeElapsed: endTime - startTime
+        client: props.currentclient,
+        project: props.currentclient,
+        startTime: props.calculateTime(props.startTime),
+        stopTime: props.calculateTime(props.endTime),
+        timeElapsed: props.endTime - props.startTime
     });
     const [entryLimit, setEntryLimit] = useState(5);
     const [editList, setEditList] = useState(false);
-    const data = tableData;
   
     function addRow() {
+        props.setTotalTime(props.totaltime + (props.endTime - props.startTime));
         setDone(1);
         const newRow = {
           index: index,
-          client: currentclient,
-          project: currentclient,
-          startTime: calculateTime(startTime),
-          stopTime: calculateTime(endTime),
-          timeElapsed: endTime - startTime
+          client: props.currentclient,
+          project: props.currentclient,
+          startTime: props.calculateTime(props.startTime),
+          stopTime: props.calculateTime(props.endTime),
+          timeElapsed: props.endTime - props.startTime
         };
         setTableData([newRow, ...tableData]);
         setNewRow({
           index: index + 1,
-          client: currentclient,
-          project: currentclient,
-          startTime: calculateTime(startTime),
-          stopTime: calculateTime(endTime),
-          timeElapsed: endTime - startTime
+          client: props.currentclient,
+          project: props.currentclient,
+          startTime: props.calculateTime(props.startTime),
+          stopTime: props.calculateTime(props.endTime),
+          timeElapsed: props.endTime - props.startTime
         });
         setIndex((index) => index + 1);
-        if (index <= 5){
-
-        }
+        if (index <= 5){}
     }
 
     function editData(){
@@ -56,10 +55,10 @@ export default function List({isRunning, currentclient, endTime, startTime, calc
         setEntryLimit(entryLimit-5)
     }
 
-    if (isRunning === 0 && done === 0){
-        addRow(); 
+    if (props.isRunning === 0 && done === 0){
+        addRow();
     }
-    if (isRunning === 1 && done === 1){
+    if (props.isRunning === 1 && done === 1){
         setDone(0);
     }
 
@@ -73,11 +72,11 @@ export default function List({isRunning, currentclient, endTime, startTime, calc
     }
     function handleStartInputChange(event, index){
         const data = tableData;
-        data[index].startTime = calculateTime(event);
+        data[index].startTime = props.calculateTime(event);
     }
     function handleStopInputChange(event, index){
         const data = tableData;
-        data[index].stopTime = calculateTime(event);
+        data[index].stopTime = props.calculateTime(event);
     }
     function handleTimeInputChange(event, index){
         const data = tableData;
@@ -87,6 +86,7 @@ export default function List({isRunning, currentclient, endTime, startTime, calc
     if (editList){
         //setTableData()
     }
+
     return (
         <div class = "entries">
             <p id="HeaderTable">Entries</p>

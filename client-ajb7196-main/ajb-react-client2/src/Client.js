@@ -2,14 +2,15 @@ import "./styles.css";
 import Button from "./Button";
 import { useState } from "react";
 
-export default function Client({client, necessary, necessary2, view, setClients, clients, clientnum, endtime, calculateTime, setClientNum}) {
+export default function Client(props) {
+    const [clientnum, setClientnum] = useState(0);
     const [editing, setEditing] = useState(false);
     const [newclient, setNewClient] = useState({
         clientnum: clientnum,
-        clientname: client,
-        totalHours: calculateTime(endtime)
+        clientname: props.client,
+        totalHours: 0
     });
-    const [client_starting_name, setClientStartingName] = useState(client);
+    const [client_starting_name, setClientStartingName] = useState(props.client);
     const [added, setAdded] = useState(false);
     const [letters, setLetters] = useState("");
 
@@ -19,31 +20,33 @@ export default function Client({client, necessary, necessary2, view, setClients,
     }
 
     function viewClients(){
-        necessary2(!view);
+        props.necessary2(!props.view);
     }
 
     function editClient(){
         setEditing(!editing);
         if (!editing){
-            setClientStartingName(client);
-            necessary(<input type="text" id="newclient" onChange={e => handleInputChange(e.target.value)}/>);
+            setClientStartingName(props.client);
+            props.necessary(<input type="text" id="newclient" onChange={e => handleInputChange(e.target.value)}/>);
         }
         else{
             if (added === true && letters.length > 0){
-                setClientNum(clientnum => clientnum + 1);
+                props.setTotalTime(0);
+                setClientnum(clientnum + 1);
+                newclient.totalHours = props.calculateTime(props.totaltime);
+                props.setClients([...props.clients, newclient]);
                 setNewClient(
                      {clientnum: clientnum,
-                        clientname: letters,
-                     totalHours: calculateTime(endtime)
+                     clientname: letters,
+                     totalHours: props.calculateTime(props.totaltime)
                 });
                 setLetters("");
                 setAdded(true);
-                necessary(letters);
-                setClients(clients => [...clients, newclient]);
+                props.necessary(letters);
                 setClientStartingName(newclient.clientname);
             }
             else{
-                necessary(client_starting_name);
+                props.necessary(client_starting_name);
             }
         }
     }
@@ -54,7 +57,7 @@ export default function Client({client, necessary, necessary2, view, setClients,
                 <Button startstyle={"Edit"} type={"editClient"} necessary={editClient} buttontext={"Edit"}></Button>
                 {added === true? <Button startstyle={"View"} type={"viewClient"} necessary={viewClients} buttontext={"View"}></Button> : null}
             </div>
-            <h1>{client}</h1>
+            <h1>{props.client}</h1>
         </div>
         
     );

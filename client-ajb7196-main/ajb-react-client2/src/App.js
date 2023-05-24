@@ -14,6 +14,7 @@ export default function App() {
     const [client, setClient] = useState("John Doe Inc.");
     const [view, setView] = useState(false)
     const [clients, setClients] = useState([]);
+    const [totaltime, setTotalTime] = useState(0);
 
     function calculateTime(elapsed){
         let [sec,min,hr] = [0,0,0];
@@ -29,7 +30,7 @@ export default function App() {
             clearInterval(id.current);
             setEndTime(time);
             setisRunning(0);
-            setTime(0)
+            setTime(0);
         }
         else{
             setStartTime(time);
@@ -43,20 +44,20 @@ export default function App() {
     if (!view){
         return (
             <>
-                <Client client={client} necessary={setClient} necessary2={setView} view={view} setClients={setClients} clients={clients} clientNum={clientnum} endtime={time} calculateTime={calculateTime} setClientNum={setClientNum}/>
+                <Client client={client} necessary={setClient} necessary2={setView} view={view} setClients={setClients} clients={clients} clientNum={clientnum} totaltime={totaltime} calculateTime={calculateTime} setClientNum={setClientNum} setTotalTime={setTotalTime}/>
                 <Timer time={time} calculateTime={calculateTime}/>
                 <div id="group">
                     <Button startstyle={"plus"} type={"add5Minutes"} time={time} necessary={setTime} buttontext={"+5"}/>
                     <Button startstyle={"timer"} type={"notifyTimer"} time={time} necessary={handleClick} buttontext={"Start"}/>
                     <Button startstyle={"minus"} type={"subtract5Minutes"} time={time} necessary={setTime} buttontext={"-5"}/>
                 </div>
-                <List isRunning={isRunning} currentclient={client} endTime={endtime} startTime={startTime} calculateTime={calculateTime}/>
+                <List isRunning={isRunning} currentclient={client} endTime={endtime} startTime={startTime} calculateTime={calculateTime} totaltime={totaltime} setTotalTime={setTotalTime}/>
             </>
         );
     } else {
         return (
             <>
-                <Client client={client} necessary={setClient} necessary2={setView} view={view} setClients={setClients} clients={clients} clientNum={clientnum} endtime={endtime} calculateTime={calculateTime} setClientNum={setClientNum}/>
+                <Client client={client} necessary={setClient} necessary2={setView} view={view} setClients={setClients} clients={clients} clientNum={clientnum} totaltime={totaltime} calculateTime={calculateTime} setClientNum={setClientNum} setTotalTime={setTotalTime}/>
                 <table id = "data">
                     <tbody> 
                         {clients.map((client) => (
@@ -67,7 +68,7 @@ export default function App() {
                         ))}
                     </tbody>
                 </table>
-                <List isRunning={isRunning} currentclient={client} endTime={endtime} startTime={startTime} calculateTime={calculateTime}/>
+                <List isRunning={isRunning} currentclient={client} endTime={endtime} startTime={startTime} calculateTime={calculateTime} totaltime={totaltime} setTotalTime={setTotalTime} />
             </>
         );
     }
